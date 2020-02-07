@@ -8,15 +8,11 @@ https://developer.wordpress.com/
 
 Add this line to your application's Gemfile:
 
-    gem 'wordpress-com'
+    gem 'wordpress-com', git: 'https://github.com/joshuaadela/wordpress-com.git'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install wordpress-com
 
 ## Usage
 
@@ -26,8 +22,8 @@ yours - user will be redirected there, and it has to match. Then do this:
 
     require 'wordpress-com'
     wpc = WordpressCom.new(client_id, client_secret)
-    url = wpc.authorize(redirect_uri)
-    # or: wpc.authorize(redirect_uri, :blog => 'http://foobar.wordpress.com/')
+    url = wpc.authorize_url(redirect_uri)
+    # or: wpc.authorize_url(redirect_uri, :blog => 'http://foobar.wordpress.com/')
 
 Make your user redirect to the returned `url`. User will be redirected
 to the `redirect_url` and given a `code` GET parameter. Use this
@@ -40,8 +36,7 @@ You can then save complete authorization data, store it somewhere, and
 reuse it later on. The authorization data is JSON and YAML safe.
 
     wordpress_auth = wpc.serialize
-    
-    wpc = WordPressCom.deserialize(wordpress_auth)
+    wpc = WordpressCom.deserialize(wordpress_auth)
 
 If you are writing a desktop or headless application and want to just
 have the authorization data without any hassle, you can use provided
@@ -63,7 +58,7 @@ attribute to get to OAuth2 token itself:
       :title => "Hello, World!",
       :content => "Lorem ipsum dolor sit amet",
       :tags => 'foo,bar,xyzzy'})
-      
+
 The request methods are automatically prefixed with
 `/rest/v1/sites/$site_id/`. To get rid of the `/sites/$site_id/` part,
 provide `:root_path => true` keyword parameter.
